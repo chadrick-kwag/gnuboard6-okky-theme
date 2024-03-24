@@ -1,0 +1,11 @@
+<div>
+
+{% if writes %}
+    {% for write in writes %}
+        <span>{% write.subject %}</span>
+    {% endfor %}
+{% else %}
+    <span>no posts</span>
+{% endif %}
+
+</div>

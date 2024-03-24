@@ -1,0 +1,95 @@
+{% extends "base_sub.html" %}
+
+{% block body_html %}
+<div class="header-nav">
+    <div class="margin-0d5rem"><a href="/"><img width=30em height=30em src="/static/img/logo_new2.png"/></a></div>
+    <div class="flex-center">
+        <a href="/board/notice"><div class="header-menu-div">공지사항</div></a>
+        <a href="/board/free"><div class="header-menu-div">자유게시판</div></a>
+        <a href="/board/qna"><div class="header-menu-div">질문답변</div></a>
+    </div>
+    <div class="header-search-bar"></div>
+    <div class="header-right-stick">
+
+    {% if request.state.login_member%}
+    <div>정보수정</div>
+    <div>로그아웃</div>
+    {% else %}
+    <div class="round-box login-box" >
+        <a href="/bbs/login">로그인</a>
+    </div>
+    <div class="register-box round-box" >
+        <a href="/bbs/register">회원가입</a>
+        </div>
+    {% endif %}
+    </div>
+</div>
+
+{% if errors %}
+<ul>
+    {% for error in errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<hr>
+
+<div id="wrapper">
+
+    <div id="container">
+        <!-- <h2 id="container_title"><span>{% block subtitle %}{% endblock subtitle %}</span></h2> -->
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+
+
+</div>
+
+<hr>
+
+<div id="ft">
+
+    <div id="ft_wr">
+        <div id="ft_link" class="ft_cnt">
+            <a href="{{ url_for('content_view', co_id='company') }}">회사소개</a>
+            <a href="{{ url_for('content_view', co_id='privacy') }}">개인정보처리방침</a>
+            <a href="{{ url_for('content_view', co_id='provision') }}">서비스이용약관</a>
+            {% if not request.state.is_responsive %}
+                {% if request.state.is_mobile %}
+                    <a href="{{ url_for('device_change', device='pc') }}">PC버전</a>
+                {% else %}
+                    <a href="{{ url_for('device_change', device='mobile') }}">모바일버전</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="ft_copy">Copyright &copy; <b>{{ request.url.hostname }}.</b> All rights reserved.</div>
+
+    <button type="button" id="top_btn">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i><span class="blind">상단으로</span>
+    </button>
+    <button type="button" class="darkmode-toggle-switch">
+      <i class="fa-solid fa-moon visible bright"></i>
+      <i class="fa-solid fa-sun visible dark"></i>
+    </button>
+
+</div>
+
+{% if request.state.config.cf_analytics %}
+    {{ request.state.config.cf_analytics|safe }}
+{% endif %}
+
+<script>
+
+    $(function() {
+        $("#top_btn").on("click", function() {
+            $("html, body").animate({scrollTop:0}, '500');
+            return false;
+        });
+    });
+
+</script>
+{% endblock body_html %}
