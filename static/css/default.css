@@ -1733,8 +1733,8 @@ hr.post-divider {
     border-color: #1977b5; 
 }
 
-.search-box-container>input,
-.search-box-container>input:focus {
+.search-box-input,
+.search-box-input:focus {
     border: none;
     outline: none;
 }
