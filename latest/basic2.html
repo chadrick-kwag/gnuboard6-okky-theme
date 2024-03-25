@@ -1,0 +1,27 @@
+{% for write in writes %}
+<div class="latest-post-container">
+    <div class="first-line">
+        <div class="flex-row flex-center flex-gap-0d2rem">
+            <span>{{write.wr_name}}</span>
+            <span>·</span>
+            <span>{{write.wr_datetime|datetime_format('%m-%d')}}</span>
+        </div>
+
+        <div class="flex-row flex-center flex-gap-0d2rem icon-box">
+            <span class="material-symbols-outlined size-16">thumb_up</span>
+            <span>{{write.wr_good}}</span>
+            <span class="material-symbols-outlined size-16">
+                sms
+            </span>
+            <span>{{write.wr_comment}}</span>
+        </div>
+    </div>
+    <div class="second-line">
+        <a href="{{ url_for('read_post', bo_table=board.bo_table, wr_id=write.wr_id)|set_query_params(request) }}">
+            <span>{{write.wr_subject}}</span>
+        </a>
+    </div>
+</div>
+
+<hr style="width:100%;">
+{% endfor %}

@@ -3,16 +3,26 @@
 {% block title %}{{ request.state.title }}{% endblock title %}
 
 {% block content %}
-<div class="flex-center flex-row" style="width: 100%;">
+<div class=" flex-row flex-align-items-start" style="width: 100%;">
 
     <div class="flex-center main-sub-block flex-col">
-        <a href="/board/free"><h1>자유게시판</h1></a>
+        <a href="/board/free">
+            <div class="latest-post-title-area">
+                <span>자유게시판</span>
+            </div>
+        </a>
+        {{ render_latest_posts(request, 'basic2', 'free', 5, 23)|safe }}
     </div>
     <div style="width: 10rem;">
-        
+
     </div>
-    <div class="flex-center main-sub-block">
-        <h1>공지사항</h1>
+    <div class="flex-start main-sub-block flex-col flex-align-items-center">
+        <a href="/board/notice">
+            <div class="latest-post-title-area">
+                <span>공지사항</span>
+            </div>
+        </a>
+        {{ render_latest_posts(request, 'basic2', 'notice', 5, 23)|safe }}
     </div>
 
 </div>
