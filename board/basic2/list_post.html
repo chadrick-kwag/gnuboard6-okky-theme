@@ -2,7 +2,6 @@
 
 
 {% block head %}
-<!-- <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" /> -->
 {% endblock head %}
 
 {% block title %}{{ board.subject }} {{ current_page }} 페이지{% endblock title %}
@@ -39,7 +38,6 @@
         <div>{{category}}</div>
         {% endfor %}
     </div>
-    <!-- <div><span>정렬</span></div> -->
     <div class="dropdown">
         <button class="btn sort-dropdown-button flex-row flex-center" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -97,17 +95,22 @@
             {{ write.wr_name }}
         </span>
         <span>
-            {{ write.wr_datetime }}
+            ·
+        </span>
+        <span>
+            {{ write.wr_datetime|datetime_format('%y-%m-%d')}}
         </span>
     </div>
     <a href="{{ url_for('read_post', bo_table=board.bo_table, wr_id=write.wr_id)|set_query_params(request) }}">
         <span class="post-title">{{ write.subject }}</span></a>
     <div class="flex-row-space-between post-footer">
         <div>{{ write.ca_name }}</div>
-        <div class="post-vcg-item">
-            <span class="material-symbols-outlined size-20 icon-default">visibility</span>
-            <span>
-                {{ write.wr_hit }}
+        <div class="post-vcg-item-area">
+            <span class="post-vcg-item">
+                <span class="material-symbols-outlined size-20 icon-default">visibility</span>
+                <span>
+                    {{ write.wr_hit }}
+                </span>
             </span>
             <span class="post-vcg-item">
                 <span class="material-symbols-outlined size-20 icon-default">
