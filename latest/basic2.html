@@ -2,6 +2,7 @@
 <div class="latest-post-container">
     <div class="first-line">
         <div class="flex-row flex-center flex-gap-0d2rem">
+            <img src="{{ get_member_icon(request, write.mb_id) }}"/>
             <span>{{write.wr_name}}</span>
             <span>·</span>
             <span>{{write.wr_datetime|datetime_format('%m-%d')}}</span>

@@ -1693,6 +1693,16 @@ hr.post-divider {
     margin: 0.1rem;
     font-size: 1.4rem;
     gap: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.post-header>img {
+    width: 1.7rem;
+    height: 1.7rem;
+
 }
 
 .post-footer {
@@ -1777,6 +1787,12 @@ hr.post-divider {
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
     font-size: 1.5rem;
+}
+
+
+.latest-post-container>.first-line>div>img {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .latest-post-container>.second-line {
