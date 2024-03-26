@@ -1463,9 +1463,18 @@ html.no-overflowscrolling .bo_write .write_subject #autosave_pop {
 }
 
 .comment-reply-vertical-line {
-    height: 100%;
-    width: none;
+    height: 100px;
+    width: 1px;
     border: 1px solid var(--divlineColor);
-    margin: 0 1rem;
+    margin: 0 2rem;
     
+}
+
+span.write-reply {
+    font-size: 1.2rem;
+}
+
+
+span.write-reply:hover {
+    color: var(--primaryColor);
 }

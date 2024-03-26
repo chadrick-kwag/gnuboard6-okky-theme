@@ -351,7 +351,7 @@
             {# <i class="fa fa-reply"></i>
             <span class="blind">대댓글</span> #}
             {# draw vertical line #}
-            <div class="'comment-reply-vertical-line"></div>
+            <div class="comment-reply-vertical-line"></div>
 
 
 
@@ -391,7 +391,97 @@
                 </div>
 
                 <div>
-                    <span>댓글쓰기</span>
+                    <span class="more_reply write-reply" data-wrid="{{ comment.wr_id }}"
+                        onclick="create_comment_box('reply_{{comment.wr_id}}');">댓글쓰기</span>
+
+                    <div id="reply_{{ comment.wr_id }}" class="hide">
+
+                        <div class="'comment-reply-vertical-line"></div>
+                        <div id="bo_basic_comment_write" class="bo_comment_write">
+                            {# <h2 class="blind">댓글쓰기</h2> #}
+
+                            <div>
+                                <img class='comment-write-icon' src="{{get_member_icon(request, write.mb_id )}}" />
+                            </div>
+
+                            <div class="comment-write-area">
+
+                                <form name="fviewcomment" id="fviewcomment" method="post" autocomplete="off"
+                                    action="{{ url_for('write_comment_update', bo_table=board.bo_table)|set_query_params(request) }}"
+                                    class="comment-form" onsubmit="return fviewcomment_submit_v2(this);">
+
+                                    <input type="hidden" name="w" id="w" value="c">
+                                    <input type="hidden" name="bo_table" value="{{ board.bo_table }}">
+                                    <input type="hidden" name="wr_id" value="{{ write.wr_id }}">
+                                    <input type="hidden" name="comment_id" value="{{ comment.wr_id }}"
+                                        id="comment_id">
+                                    <input type="hidden" name="sca" value="{{ request.query_params.sca }}">
+                                    <input type="hidden" name="sfl" value="{{ request.query_params.sfl }}">
+                                    <input type="hidden" name="stx" value="{{ request.query_params.stx }}">
+                                    <input type="hidden" name="spt" value="{{ request.query_params.spt }}">
+                                    <input type="hidden" name="page" value="{{ request.query_params.page }}">
+                                    <input type="hidden" name="token" value="">
+
+                                    <div class="write_writer">
+                                        {% if not request.state.login_member %}
+                                        <label for="wr_name" class="blind">이름<strong> 필수</strong></label>
+                                        <input type="text" name="wr_name" value="" id="wr_name" required
+                                            class="frm_input required" size="25" placeholder="이름">
+                                        <label for="wr_password" class="blind">비밀번호<strong> 필수</strong></label>
+                                        <input type="password" name="wr_password" id="wr_password" required
+                                            class="frm_input required" size="25" placeholder="비밀번호">
+                                        {% endif %}
+                                    </div>
+
+                                    <span class="blind">내용</span>
+                                    <textarea id="wr_content" name="wr_content" maxlength="10000" required
+                                        class="required" {% if board.bo_comment_min and board.bo_comment_max %}
+                                        onkeyup="check_byte('wr_content', 'length_count');" {% endif %}
+                                        placeholder="댓글을 입력해주세요"></textarea>
+
+                                    {% if board.bo_comment_min and board.bo_comment_max %}
+                                    <script> check_byte("wr_content", "length_count"); </script>
+                                    <strong id="contents_length"><span id="length_count">0</span>글자</strong>
+                                    {% endif %}
+
+                                    {% if not request.state.login_member %}
+                                    <fieldset id="captcha" class="captcha">{% include captcha_widget(request) ignore
+                                        missing %}</fieldset>
+                                    {% endif %}
+
+                                    <div class="btn_confirm">
+                                        <div class="chk_box">
+                                            <input type="checkbox" name="wr_secret" value="secret" id="wr_secret">
+                                            <label for="wr_secret">
+                                                <span></span>비밀댓글
+                                            </label>
+                                        </div>
+
+                                        <button type="submit" id="btn_submit" class="btn_submit">댓글 쓰기</button>
+                                    </div>
+
+                                    <script>
+                                        $(document).on("keyup change", "textarea#wr_content[maxlength]", function () {
+                                            var str = $(this).val()
+                                            var mx = parseInt($(this).attr("maxlength"))
+                                            if (str.length > mx) {
+                                                $(this).val(str.substr(0, mx));
+                                                return false;
+                                            }
+                                        });
+                                    </script>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div><!-- 답변 -->
+
+
+
+                    <div id="edit_{{ comment.wr_id }}"></div><!-- 수정 -->
                 </div>
 
                 {#
@@ -473,14 +563,14 @@
 
         <script>
             $(function () {
-                $(".more_reply").click(function () {
+                /* $(".more_reply").click(function () {
                     let $this = $(this);
                     let wrId = $this.data("wrid");
 
                     comment_box(wrId, "c");
                     $(this).closest(".more").hide();
                     return false;
-                });
+                }); */
 
                 $(".more_modify").click(function () {
                     let $this = $(this);
@@ -529,6 +619,102 @@
         // 글자수 제한
         var char_min = parseInt({{ board.bo_comment_min }}); // 최소
         var char_max = parseInt({{ board.bo_comment_max }}); // 최대
+
+        // 글숫자 검사
+        function check_byte_of_content(content) {
+            var i = 0;
+            var cnt = 0;
+            var ch = '';
+            var cont = content;
+
+            for (i = 0; i < cont.length; i++) {
+                ch = cont.charAt(i);
+                if (escape(ch).length > 4) {
+                    cnt += 2;
+                } else {
+                    cnt += 1;
+                }
+            }
+
+            return cnt;
+        }
+
+
+        function fviewcomment_submit_v2(f) {
+            console.log('inside fviewcomment_submit_v2');
+            console.log(f);
+
+            //return false;
+            // 양쪽 공백 없애기
+            var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+            let el_wr_content = f.wr_content;
+
+            // document.getElementById('wr_content').value = document.getElementById('wr_content').value.replace(pattern, "");
+            el_wr_content.value = el_wr_content.value.replace(pattern, "");
+            if (char_min > 0 || char_max > 0) {
+                let cnt = check_byte_of_content(el_wr_content.value)
+                //check_byte('wr_content', 'length_count');
+                // var cnt = parseInt(document.getElementById('length_count').innerHTML);
+                if (char_min > 0 && char_min > cnt) {
+                    alert("댓글은 " + char_min + "글자 이상 쓰셔야 합니다.");
+                    return false;
+                } else if (char_max > 0 && char_max < cnt) {
+                    alert("댓글은 " + char_max + "글자 이하로 쓰셔야 합니다.");
+                    return false;
+                }
+            }
+            else if (!f.wr_content.value) {
+                alert("댓글을 입력하여 주십시오.");
+                return false;
+            }
+
+            if (typeof (f.wr_name) != 'undefined') {
+                f.wr_name.value = f.wr_name.value.replace(pattern, "");
+                if (f.wr_name.value == '') {
+                    alert('이름이 입력되지 않았습니다.');
+                    f.wr_name.focus();
+                    return false;
+                }
+            }
+
+            if (typeof (f.wr_password) != 'undefined') {
+                f.wr_password.value = f.wr_password.value.replace(pattern, "");
+                if (f.wr_password.value == '') {
+                    alert('비밀번호가 입력되지 않았습니다.');
+                    f.wr_password.focus();
+                    return false;
+                }
+            }
+
+            //return false;
+
+            f.token.value = generate_token();
+            if (f.token.value == "") {
+                alert("토큰 생성에 실패하였습니다.");
+                return false;
+            }
+            console.log('token value');
+            console.log(f.token.value);
+
+            // captcha 사용시
+            if (typeof check_captcha === "function") {
+                if (!check_captcha(f)) {
+                    return false;
+                }
+            }
+
+            //document.getElementById("btn_submit").disabled = true;
+            f.btn_submit.disabled = true;
+
+            //return false;
+
+            console.log('ending');
+            return true;
+
+        }
+
+
+
 
         function fviewcomment_submit(f) {
             // 양쪽 공백 없애기
@@ -585,6 +771,16 @@
 
             return true;
         }
+
+        // create new comment box custom
+        function create_comment_box(reply_id) {
+            console.log('debug')
+            console.log(reply_id)
+            /* reply_id.display='none'; */
+            $('#' + reply_id).toggle()
+        }
+
+        //
 
         function comment_box(comment_id, work) {
             var el_id,

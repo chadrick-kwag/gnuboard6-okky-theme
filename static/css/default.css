@@ -1906,3 +1906,7 @@ a:has(.latest-post-title-area) {
     display: flex;
     flex-direction: row-reverse;
 }
+
+.hide {
+    display: none;
+}
