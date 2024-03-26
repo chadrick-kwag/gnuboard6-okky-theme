@@ -1,11 +1,14 @@
 @charset "utf-8";
 
 :root {
-    --primaryColor: #4989bc;
+    /* --primaryColor: #4989bc; */
+    --primaryColor: rgb(0 144 249);
+    --primaryHoverColor: rgb(19 93 147);
     --react-good: #ff484f;
     --react-nogood: #217aee;
 
     --board-title-area-bgcolor: rgb(232, 232, 232);
+    --divlineColor: #e5e7eb;
 }
 
 :root[color-theme='light'] { /* 스위치 버튼 */
@@ -504,8 +507,10 @@ button.btn02 { display:inline-block; margin:0; padding:7px; border:1px solid #3b
 
 .btn_confirm { text-align:right }/* 서식단계 진행 */
 
-.btn_submit { border:0; background:var(--primaryColor); color:#fff; cursor:pointer; border-radius:3px }
-.btn_submit:hover { background:#285981 }
+.btn_submit { border:0; background:var(--primaryColor); color:#fff; cursor:pointer; 
+    font-size: 1.5rem;
+    border-radius:2rem; }
+.btn_submit:hover { background:var(--primaryHoverColor) }
 .btn_close { border:var(--border); cursor:pointer; border-radius:3px; background:var(--inputBg); color: var(--fontColor); }
 a.btn_close { text-align:center; line-height:50px }
 
@@ -1815,6 +1820,10 @@ hr.post-divider {
     gap: 0.2rem;
 }
 
+.flex-gap-0d4rem {
+    gap: 0.4rem;
+}
+
 .icon-box {
     color: rgb(55 65 81);
 }
@@ -1847,4 +1856,53 @@ a:has(.latest-post-title-area) {
     font-size: 2rem;
     font-weight: bold;
     margin-left: 1rem;
+}
+
+
+/* post read */
+
+.post-read-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-read-header>.second-line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-read-header>.second-line>.writer-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.post-read-header>.second-line>.writer-info>.subinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-read-title {
+    width: 100%;
+    font-size: 3rem; 
+    font-weight: 600;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.post-read-text {
+    width: 100%;
+    line-height: 200%;
+    font-size: 1.5rem;
+}
+
+.post-read-like-dislike-area {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
 }
