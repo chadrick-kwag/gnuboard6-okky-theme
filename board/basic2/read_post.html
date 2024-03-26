@@ -380,6 +380,46 @@
                             <span>{{comment.wr_good}}</span>
                             <span class="material-symbols-outlined">thumb_down</span>
                             <span>{{comment.wr_nogood}}</span>
+                            {% if request.state.login_member.mb_id==comment.mb_id %}
+                            <div class="buttons_more">
+                                <span class="dropdown">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                    <div class="dropdown-content">
+                                        <ul>
+                                            {% if comment.is_edit %}
+                                            <li><button type="button" class="more_modify"
+                                                    data-wrid="{{ comment.wr_id }}">수정하기</button></li>
+                                            {% endif %}
+                                            {% if comment.is_del %}
+                                            <li>
+                                                <button type="button" class="more_delete"
+                                                    data-href="/board/delete_comment/{{ board.bo_table }}/{{ comment.wr_id }}"><span
+                                                        class="material-symbols-outlined">delete</span>삭제하기</button>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </span>
+                                {# <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                <span class="blind">댓글 옵션</span> #}
+                                <ul class="more">
+                                    {% if comment.is_edit %}
+                                    <li><button type="button" class="more_modify"
+                                            data-wrid="{{ comment.wr_id }}">수정하기</button></li>
+                                    {% endif %}
+                                    {% if comment.is_del %}
+                                    <li>
+                                        <button type="button" class="more_delete"
+                                            data-href="/board/delete_comment/{{ board.bo_table }}/{{ comment.wr_id }}"><span
+                                                class="material-symbols-outlined">delete</span>삭제하기</button>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            {% endif %}
+
+
+
                         </div>
                     </div>
                 </div>
@@ -413,8 +453,7 @@
                                     <input type="hidden" name="w" id="w" value="c">
                                     <input type="hidden" name="bo_table" value="{{ board.bo_table }}">
                                     <input type="hidden" name="wr_id" value="{{ write.wr_id }}">
-                                    <input type="hidden" name="comment_id" value="{{ comment.wr_id }}"
-                                        id="comment_id">
+                                    <input type="hidden" name="comment_id" value="{{ comment.wr_id }}" id="comment_id">
                                     <input type="hidden" name="sca" value="{{ request.query_params.sca }}">
                                     <input type="hidden" name="sfl" value="{{ request.query_params.sfl }}">
                                     <input type="hidden" name="stx" value="{{ request.query_params.stx }}">
@@ -535,25 +574,6 @@
                 <textarea id="save_comment_{{ comment.wr_id }}"
                     style="display:none">{{ comment.save_content|safe }}</textarea>
 
-                <div class="buttons_more">
-                    <button type="button" class="more_opener btn_b01 btn">
-                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        <span class="blind">댓글 옵션</span>
-                    </button>
-                    <ul class="more">
-                        {% if comment.is_reply %}
-                        <li><button type="button" class="more_reply" data-wrid="{{ comment.wr_id }}">답변</button></li>
-                        {% endif %}
-                        {% if comment.is_edit %}
-                        <li><button type="button" class="more_modify" data-wrid="{{ comment.wr_id }}">수정</button></li>
-                        {% endif %}
-                        {% if comment.is_del %}
-                        <li><button type="button" class="more_delete"
-                                data-href="/board/delete_comment/{{ board.bo_table }}/{{ comment.wr_id }}">삭제</button>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
 
             </div>
         </div>

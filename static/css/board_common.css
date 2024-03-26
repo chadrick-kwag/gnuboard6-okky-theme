@@ -1478,3 +1478,20 @@ span.write-reply {
 span.write-reply:hover {
     color: var(--primaryColor);
 }
+
+
+.dropdown {
+    position: relative;
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    padding: 1rem;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
